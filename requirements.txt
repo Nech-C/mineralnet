@@ -2,3 +2,4 @@ pillow
 datasets
 torch
 torchvision
+mlflow
