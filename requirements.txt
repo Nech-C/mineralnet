@@ -1,0 +1,4 @@
+pillow
+datasets
+torch
+torchvision
