@@ -10,7 +10,7 @@ def load_model(
     """load pretrained model from toml config with possible modification"""
     config = toml.load(toml_path)
     model = None
-
+    untrained_weights = []
     # load model from model repo
     if 'torch' in config['from']:
         import torch
@@ -24,7 +24,9 @@ def load_model(
         for swap in config['module_swap']:
             new_module = load_module(swap['new_module'])
             setattr(model, swap['target'], new_module)
-    return model
+
+    return {'model': model, 'untrained_weights': untrained_weights}
+
 
 def load_module(
     module_config: Union[Dict, List[Dict]]
@@ -36,3 +38,14 @@ def load_module(
         return module
 
     return nn.ModuleList([load_module(module) for module in module_config])
+
+
+def prepare_training(
+    training_config_path: str
+):
+    config = toml.load(training_config_path)
+    model = load_model(config['model']['config_path'])
+    
+    
+    
+    return model
