@@ -1,22 +1,22 @@
 # Specifies the source from which to load the model
-from = 'pytorch'  # e.g., 'pytorch', 'huggingface', 'local'
+from = "pytorch"  # e.g., 'pytorch', 'huggingface', 'local'
 
 # Defines the backbone model to load
 [backbone]
-repo_or_dir = 'pytorch/vision'  # Repository or directory of the model
-model = 'resnet18'              # Model name
+repo_or_dir = "pytorch/vision"  # Repository or directory of the model
+model = "resnet18"              # Model name
 pretrained = true               # Whether to load pretrained weights
 
 # (Optional) Specifies modules to swap in the model
 [[module_swap]]
-target = 'fc'  # The module in the model to replace
-new_module = {              # Definition of the new module 
-  torch_module = 'Linear',  # PyTorch module class to use
-  args = {                  # Arguments for the module's constructor
+target = "fc"                   # The module in the model to replace
+new_module = {                  # Definition of the new module 
+  torch_module = "Linear",      # PyTorch module class to use
+  args = {                      # Arguments for the module's constructor
     in_features = 512,
     out_features = 10
   }
 }
 
 # (Optional) List of modules to unfreeze for training
-unfreeze_modules = ['fc']  # Names of modules to unfreeze
+unfreeze_modules = ["fc"]       # Names of modules to unfreeze
