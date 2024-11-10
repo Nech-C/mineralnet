@@ -1,6 +1,11 @@
+from typing import Any, Dict
+
 import toml
 import torch.nn as nn
-from typing import Any, Dict
+import torch
+import torchvision
+import torchaudio
+
 
 def load_model(
     toml_path: str
@@ -20,17 +25,23 @@ def load_model(
 
     # Determine the source to load the model from
     if config['from'] == 'pytorch':
-        import torch
         model = torch.hub.load(
             **config['backbone']  # Unpack the backbone configuration
         )
     else:
-        # Handle other sources (e.g., 'huggingface', 'local')
-        pass  # Not implemented yet
+        print(f"Unsupported source '{config['from']}' for loading the model.")
 
     # Freeze all parameters in the model
     for param in model.parameters():
         param.requires_grad = False
+
+    # Swap modules if specified
+    if 'module_swap' in config:
+        for swap in config['module_swap']:
+            # Load the new module based on the configuration
+            new_module = load_module(swap['new_module'])
+            # Replace the target module in the model
+            setattr(model, swap['target'], new_module)
 
     # Unfreeze specified modules
     if 'unfreeze_modules' in config:
@@ -44,14 +55,6 @@ def load_model(
             else:
                 # Handle the case where the module is not found
                 print(f"Module '{module_name}' not found in the model.")
-
-    # Swap modules if specified
-    if 'module_swap' in config:
-        for swap in config['module_swap']:
-            # Load the new module based on the configuration
-            new_module = load_module(swap['new_module'])
-            # Replace the target module in the model
-            setattr(model, swap['target'], new_module)
 
     return model
 
