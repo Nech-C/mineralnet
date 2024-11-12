@@ -1,0 +1,16 @@
+from = "pytorch"
+
+[backbone]
+repo_or_dir = "pytorch/vision"
+model = "resnext50_32x4d"
+weights = "ResNeXt50_32X4D_Weights.DEFAULT"
+
+[[module_swap]]
+target = "fc"
+new_module.torch_module = "Linear"
+new_module.args.in_features = 2048
+new_module.args.out_features = 98
+
+
+
+unfreeze_modules = ["fc"]

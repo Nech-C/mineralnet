@@ -1,0 +1,45 @@
+# Data settings
+[data]
+train_data = '/path/to/train_data'  # Path to training data
+val_data = '/path/to/val_data'      # Path to validation data
+batch_size = 32                     # Batch size for training
+
+# Model settings
+[model]
+config_path = './configs/models/model_template.toml'  # Path to the model config file
+
+# Optimizer settings
+[optimizer]
+type = 'AdamW'                     # Optimizer class name
+params = {                         # Optimizer parameters
+  lr = 0.001,
+  weight_decay = 0.01
+}
+
+# Learning rate scheduler settings
+[scheduler]
+type = 'CosineAnnealingLR'         # Scheduler class name
+params = {                         # Scheduler parameters
+  T_max = 50,
+  eta_min = 0.00001
+}
+
+# Loss function settings
+[loss]
+type = 'CrossEntropyLoss'          # Loss function class name
+params = {}                        # Loss function parameters
+
+# Early stopping settings
+[early_stopping]
+patience = 5                       # Number of epochs to wait before stopping
+delta = 0.001                      # Minimum change to qualify as an improvement
+
+# Checkpoint settings
+[checkpoint]
+dir = './checkpoints/'             # Directory to save checkpoints
+save_freq = 1                      # Save checkpoint every N epochs
+
+# Logging settings (Weights & Biases)
+[wandb]
+project = 'your_project_name'      # W&B project name
+entity = 'your_username'           # (Optional) W&B username or team name
